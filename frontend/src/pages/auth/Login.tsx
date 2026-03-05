@@ -56,7 +56,9 @@ function Login() {
                                 className={style.input}
                             />
 
-                            <button type="submit" className={style.button}>Inicia Sesión</button>                            
+                            <button type="submit" className={style.button}>Inicia Sesión</button> 
+
+                                <p className={style.text}>¿No tienes una cuenta? <a className={style.a} href="/register">Registrarse</a></p>                      
                     </form>
             </div>
         </section>

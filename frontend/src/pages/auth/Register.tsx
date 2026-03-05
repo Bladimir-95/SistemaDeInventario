@@ -83,6 +83,8 @@ function Register() {
                 <button type="submit" className={style.button}>
                   Registrarse
                 </button>
+
+                <p className={style.text}>¿Ya tienes una cuenta? <a className={style.a} href="/login">Log in</a></p>
             </form>
           </div>
       </section>

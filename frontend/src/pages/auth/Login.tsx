@@ -1,7 +1,6 @@
 import style from "./auth.module.css";
 import { useState } from "react";
 import React from "react";
-import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
 
 function Login() {
@@ -33,7 +32,6 @@ function Login() {
 
   return (
     <>
-      <Navbar />
       <section className={style.container}>
         <div className={style.card} style={{ height: "400px" }}>
           <h2 className={style.title}>Inicia Sesión</h2>

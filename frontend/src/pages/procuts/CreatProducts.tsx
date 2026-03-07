@@ -2,7 +2,7 @@ import { useState } from "react";
 import style from "./CreateProducts.module.css";
 import icono from "../../assets/icons/icons8-caja.svg";
 import "../../components/navbar/Navbar";
-import Navbar from "../../components/navbar/Navbar";
+
 
 function CreatProducts() {
   const [name, setName] = useState<string>("");
@@ -37,7 +37,6 @@ function CreatProducts() {
 
   return (
     <>
-    <Navbar />
       <section className={style.container}>
         <div className={style.card}>
           <div className={style.title}>

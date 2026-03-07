@@ -1,6 +1,5 @@
 import style from "./auth.module.css";
 import { useState } from "react";
-import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
 
 function Register() {
@@ -39,7 +38,6 @@ function Register() {
 
   return (
     <>
-      <Navbar />
       <section className={style.container}>
         <div className={style.card}>
           <h2 className={style.title}>Resgistrate</h2>

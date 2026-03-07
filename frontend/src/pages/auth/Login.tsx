@@ -1,69 +1,79 @@
 import style from "./auth.module.css";
 import { useState } from "react";
-import React from 'react';
+import React from "react";
+import Navbar from "../../components/navbar/Navbar";
+import { Link } from "react-router-dom";
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        if(!email || !password) {
-            setError("Todos los campos son obligatorios");
-            return;
-        }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-        if(!email.includes("@")){
-            setError("El correo no es valido");
-            return;
-        }
-
-        if (password.length < 6) {
-            setError("La contraseña debe tener al menos 6 caracteres");
-            return;
-        }
-
-        setError("");
-        console.log({email, password})
+    if (!email || !password) {
+      setError("Todos los campos son obligatorios");
+      return;
     }
+
+    if (!email.includes("@")) {
+      setError("El correo no es valido");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
+
+    setError("");
+    console.log({ email, password });
+  };
 
   return (
     <>
-        <section className={style.container}>
-            <div className={style.card} style={{ height: '400px'}}>
-                <h2 className={style.title}>Inicia Sesión</h2>
+      <Navbar />
+      <section className={style.container}>
+        <div className={style.card} style={{ height: "400px" }}>
+          <h2 className={style.title}>Inicia Sesión</h2>
 
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-                    <form onSubmit={handleSubmit} className={style.form}>
-                        <label className={style.text}>Correo Electrónico</label>
-                            <input 
-                                type="email" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Ejemplo@gmail.com"
-                                className={style.input}
-                            />
+          <form onSubmit={handleSubmit} className={style.form}>
+            <label className={style.text}>Correo Electrónico</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Ejemplo@gmail.com"
+              className={style.input}
+            />
 
-                        <label className={style.text}>Contraseña</label>
-                            <input 
-                                type="password" 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Contraseña"
-                                className={style.input}
-                            />
+            <label className={style.text}>Contraseña</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              className={style.input}
+            />
 
-                            <button type="submit" className={style.button}>Inicia Sesión</button> 
+            <button type="submit" className={style.button}>
+              Inicia Sesión
+            </button>
 
-                                <p className={style.text}>¿No tienes una cuenta? <a className={style.a} href="/register">Registrarse</a></p>                      
-                    </form>
-            </div>
-        </section>
+            <p className={style.text}>
+              ¿No tienes una cuenta?{" "}
+              <Link className={style.a} to="/register">
+                Registrarse
+              </Link>
+            </p>
+          </form>
+        </div>
+      </section>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;

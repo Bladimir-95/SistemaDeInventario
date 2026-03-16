@@ -2,16 +2,21 @@ import { useState } from "react";
 import style from "./CreateProducts.module.css";
 import icono from "../../../assets/icons/icons8-caja.svg";
 
-
-
 function CreatProducts() {
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [precio, setPrecio] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+  const message = error ? (
+    <p className={style.error}>{error}</p>
+  ) : success ? (
+    <p className={style.success}>{success}</p>
+  ) : null;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -32,7 +37,19 @@ function CreatProducts() {
     if (!image) return setError("Imagen requerida");
 
     setError("");
+    setSuccess("Producto agregado exitosamente");
     console.log({ name, category, precio, stock, image });
+
+    // Limpiar inputs
+    setTimeout(() => {
+      setName("");
+      setCategory("");
+      setPrecio("");
+      setStock("");
+      setImage(null);
+      setPreview(null);
+      setSuccess("");
+    }, 5000);
   };
 
   return (
@@ -46,7 +63,7 @@ function CreatProducts() {
 
           <p className={style.p}>Agrega un producto nuevo para tu tienda</p>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {message}
 
           <form onSubmit={handleSubmit} className={style.form}>
             <label className={style.label}>Nombre</label>

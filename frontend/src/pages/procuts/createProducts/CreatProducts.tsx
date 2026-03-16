@@ -1,7 +1,7 @@
 import { useState } from "react";
 import style from "./CreateProducts.module.css";
-import icono from "../../assets/icons/icons8-caja.svg";
-import "../../components/navbar/Navbar";
+import icono from "../../../assets/icons/icons8-caja.svg";
+
 
 
 function CreatProducts() {

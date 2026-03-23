@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import CreatProducts from "../createProducts/CreatProducts";
-import GetProducts from '../getProducts/GetProducts';
+
 
 type Product = {
   id: number;
@@ -27,6 +27,13 @@ const products: Product[] = [
     stock: 2,
     category: "tecnologia",
   },
+  {
+      id: 3,
+      name: "Mouse Gamer",
+      price: 80,
+      stock: 9,
+      category: "Tecnologia"
+    },
 ];
 
 function EditProduct() {

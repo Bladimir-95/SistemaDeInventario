@@ -1,5 +1,6 @@
 import style from "./GetProducts.module.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 type Product = {
   id: number;
@@ -10,7 +11,7 @@ type Product = {
 };
 
 function GetProducts() {
-  const products: Product[] = [
+  const [products, setProducts] = useState<Product[]>([
     {
       id: 1,
       name: "laptop Gamer",
@@ -35,17 +36,20 @@ function GetProducts() {
         "https://www.steren.com.sv/media/catalog/product/cache/bb0cad18a6adb5d17b0efd58f4201a2f/image/2302839e9/mouse-usb-gamer-800-1600-2400-3200-4800-7200-dpi.jpg",
       stock: 9,
     },
-  ];
+  ]);
+
+  const handleDelete = (id: number) => {
+    const confirmDelete = confirm("¿Seguro que quieres eliminar este producto?");
+    if (!confirmDelete) return;
+
+    const updatedProducts = products.filter(p => p.id !== id);
+    setProducts(updatedProducts);
+  };
 
   return (
     <div className={style.container}>
       <section className={style.hero}>
-        <div className={style.heroHeader}>
-          <h1 className={style.title}>Inventario</h1>
-          <Link to="/edit" className={style.editButton}>
-            Editar productos
-          </Link>
-        </div>
+        <h1 className={style.title}>Inventario</h1>
         <p>
           Administra tus productos, controla el stock y mantén tu inventario
           actualizado.
@@ -65,11 +69,26 @@ function GetProducts() {
                 className={style.image}
               />
 
-              <h3 className={style.productName}>{product.name}</h3>
+              {/* HEADER CON BOTONES */}
+              <div className={style.cardHeader}>
+                <h3 className={style.productName}>{product.name}</h3>
+
+                <div className={style.actions}>
+                  <Link to={`/editProduct/${product.id}`} className={style.editIcon}>
+                    ✏️
+                  </Link>
+
+                  <button
+                    onClick={() => handleDelete(product.id)}
+                    className={style.deleteIcon}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
 
               <p className={style.price}>${product.price}</p>
-
-              <p className={style.stock}>Stock:{product.stock}</p>
+              <p className={style.stock}>Stock: {product.stock}</p>
             </div>
           ))}
         </div>

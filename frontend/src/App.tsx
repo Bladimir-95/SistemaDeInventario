@@ -5,6 +5,7 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import CreatProducts from "./pages/procuts/createProducts/CreatProducts";
 import GetProducts from "./pages/procuts/getProducts/GetProducts";
+import EditProduct from "./pages/procuts/editProduct/EditProduct";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/creatProduct" element={<CreatProducts />} />
-            <Route path="/getProducts" element={<GetProducts />} />
+            <Route path="/getProduct" element={<GetProducts />} />
+            <Route path="/editProduct/:id" element={<EditProduct />}/>
           </Route >
         </Routes>
       </Router>

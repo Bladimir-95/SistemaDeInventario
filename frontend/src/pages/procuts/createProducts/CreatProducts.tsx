@@ -1,8 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "./CreateProducts.module.css";
 import icono from "../../../assets/icons/icons8-caja.svg";
+import { useNavigate } from "react-router-dom";
 
-function CreatProducts() {
+type Product = {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  image?: string;
+}
+
+type Props = {
+  product?: Product
+}
+
+function CreatProducts({ product }: Props) {
+  const navigate = useNavigate();
+  const isEdit = !!product;
+
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [precio, setPrecio] = useState<number | "">("");
@@ -11,6 +28,16 @@ function CreatProducts() {
   const [success, setSuccess] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if(product){
+      setName(product.name);
+      setCategory(product.category);
+      setPrecio(product.price);
+      setStock(product.stock);
+      setPreview(product.image || null);
+    }
+  }, [product]);
 
   const message = error ? (
     <p className={style.error}>{error}</p>
@@ -37,8 +64,33 @@ function CreatProducts() {
     if (!image) return setError("Imagen requerida");
 
     setError("");
+
+    if(isEdit) {
+      console.log("Editando", {
+        id: product?.id,
+        name,
+        category,
+        precio,
+        stock,
+        image,
+      });
+
+      setSuccess("Producto actulaizado");
+      
+      setTimeout(() => navigate("/getProduct"), 3000);
+      
+    } else {
+      console.log("Creando:", {
+        name,
+        category,
+        precio,
+        stock,
+        image,
+      });
+    }
+
     setSuccess("Producto agregado exitosamente");
-    console.log({ name, category, precio, stock, image });
+   
 
     // Limpiar inputs
     setTimeout(() => {

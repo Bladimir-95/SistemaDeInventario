@@ -10,10 +10,33 @@
   margin-bottom: 40px;
 }
 
+
+.heroHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .title {
   font-size: 32px;
   font-weight: 700;
   color: #1e293b;
+}
+
+/* ESTILOS DE BOTON EDITAR */
+.editButton {
+  background: linear-gradient(135deg, #2c7a7b, #285e63);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.editButton:hover {
+  background: linear-gradient(135deg, #285e63, #2c7a7b);
+  transform: translateX(-2px);
+  box-shadow: 0 8px 20px rgba(44, 122, 123, 0.4);
 }
 
 .subtitle {

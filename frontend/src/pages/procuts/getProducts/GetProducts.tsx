@@ -1,4 +1,5 @@
 import style from "./GetProducts.module.css";
+import { Link } from "react-router-dom";
 
 type Product = {
   id: number;
@@ -9,7 +10,6 @@ type Product = {
 };
 
 function GetProducts() {
-
   const products: Product[] = [
     {
       id: 1,
@@ -40,9 +40,15 @@ function GetProducts() {
   return (
     <div className={style.container}>
       <section className={style.hero}>
-        <h1 className={style.title}>Inventario</h1>
+        <div className={style.heroHeader}>
+          <h1 className={style.title}>Inventario</h1>
+          <Link to="/edit" className={style.editButton}>
+            Editar productos
+          </Link>
+        </div>
         <p>
-          Administra tus productos, controla el stock y mantén tu inventario actualizado.
+          Administra tus productos, controla el stock y mantén tu inventario
+          actualizado.
         </p>
       </section>
 

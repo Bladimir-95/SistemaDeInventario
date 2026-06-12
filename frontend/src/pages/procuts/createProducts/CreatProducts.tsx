@@ -110,7 +110,7 @@ function CreatProducts({ product }: Props) {
         <div className={style.card}>
           <div className={style.title}>
             <img className={style.icono} src={icono} alt="icono" />
-            <h2 className={style.title_text}>Agregar Producto</h2>
+            <h2 className={style.title_text}>{product ? "Editar Producto" : "Crear Producto"}</h2>
           </div>
 
           <p className={style.p}>Agrega un producto nuevo para tu tienda</p>

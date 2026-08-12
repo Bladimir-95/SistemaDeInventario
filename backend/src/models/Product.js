@@ -18,6 +18,32 @@ const getAll = async () => {
   }
 };
 
+const creatProduct = async (product) => {
+  try {
+    const sql = `
+      INSERT INTO products
+      (name, price, stock, image, category_id, status)
+      VALUES (?,?,?,?,?,?)
+    `;
+
+    const [result] = await db.query(sql, [
+      product.name,
+      product.price,
+      product.stock,
+      product.image,
+      product.category_id,
+      product.status
+    ])
+
+    console.log('Producto creado:', result)
+    return result
+
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
   getAll,
+  creatProduct,
 };

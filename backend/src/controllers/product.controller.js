@@ -19,7 +19,16 @@ const getProducts = async (req, res) => {
 
 const creatProduct = async (req, res) => {
   try {
-    const product = req.body
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    const product = {
+      name: req.body.name,
+      price: req.body.price,
+      stock: req.body.stock,
+      category_id: req.body.category_id,
+      image: req.file ? req.file.filename: null,
+    }
 
     console.log("Producto recibido:", product)
 

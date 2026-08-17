@@ -22,8 +22,8 @@ const creatProduct = async (product) => {
   try {
     const sql = `
       INSERT INTO products
-      (name, price, stock, image, category_id, status)
-      VALUES (?,?,?,?,?,?)
+      (name, price, stock, image, category_id)
+      VALUES (?,?,?,?,?)
     `;
 
     const [result] = await db.query(sql, [
@@ -32,7 +32,6 @@ const creatProduct = async (product) => {
       product.stock,
       product.image,
       product.category_id,
-      product.status
     ])
 
     console.log('Producto creado:', result)

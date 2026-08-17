@@ -2,42 +2,71 @@ import { useState, useEffect } from "react";
 import style from "./CreateProducts.module.css";
 import icono from "../../../assets/icons/icons8-caja.svg";
 import { useNavigate } from "react-router-dom";
+import GetProducts from '../getProducts/GetProducts';
 
 type Product = {
   id: number;
   name: string;
-  category: string;
+  category_id: number;
   price: number;
   stock: number;
   image?: string;
-}
+};
 
 type Props = {
-  product?: Product
-}
+  product?: Product;
+};
+
+type Category = {
+  id: number;
+  name: string;
+};
 
 function CreatProducts({ product }: Props) {
   const navigate = useNavigate();
   const isEdit = !!product;
 
   const [name, setName] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
-  const [precio, setPrecio] = useState<number | "">("");
+  const [category_id, setCategory_id] = useState<number | "">("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [price, setPrice] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
+  console.log(categories);
+
   useEffect(() => {
-    if(product){
+    if (product) {
       setName(product.name);
-      setCategory(product.category);
-      setPrecio(product.price);
+      setCategory_id(product.category_id);
+      setPrice(product.price);
       setStock(product.stock);
       setPreview(product.image || null);
     }
   }, [product]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/categories");
+
+        if (!response.ok) {
+          throw new Error("Error al obtener categorias");
+        }
+
+        const data = await response.json();
+
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getCategories();
+  }, []);
 
   const message = error ? (
     <p className={style.error}>{error}</p>
@@ -54,54 +83,57 @@ function CreatProducts({ product }: Props) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name.trim()) return setError("Nombre requerido");
-    if (!category.trim()) return setError("Categoría requerida");
-    if (precio === "") return setError("Precio requerido");
+    if (category_id == "") return setError("Categoría requerida");
+    if (price === "") return setError("Precio requerido");
     if (stock === "") return setError("Stock requerido");
     if (!image) return setError("Imagen requerida");
 
     setError("");
+    setSuccess("");
 
-    if(isEdit) {
-      console.log("Editando", {
-        id: product?.id,
-        name,
-        category,
-        precio,
-        stock,
-        image,
-      });
+    try {
+      const formData = new FormData();
 
-      setSuccess("Producto actulaizado");
-      
-      setTimeout(() => navigate("/getProduct"), 3000);
-      
-    } else {
-      console.log("Creando:", {
-        name,
-        category,
-        precio,
-        stock,
-        image,
-      });
+      formData.append("name", name.trim());
+      formData.append("category_id", String(category_id));
+      formData.append("price", String(price));
+      formData.append("stock", String(stock));
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      const response = await fetch(
+        "http://localhost:3000/api/products/creatproduct",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if(!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Error al crear el objeto");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      setSuccess("Producto creado exitosamente")
+      setTimeout(() => {
+        navigate("/getProduct");
+      }, 1500);
+
+    } catch (error) {
+      setError(error instanceof Error 
+        ? error.message : 
+        "Ocurrio un error al crear producto");
     }
-
-    setSuccess("Producto agregado exitosamente");
-   
-
-    // Limpiar inputs
-    setTimeout(() => {
-      setName("");
-      setCategory("");
-      setPrecio("");
-      setStock("");
-      setImage(null);
-      setPreview(null);
-      setSuccess("");
-    }, 5000);
   };
 
   return (
@@ -110,7 +142,9 @@ function CreatProducts({ product }: Props) {
         <div className={style.card}>
           <div className={style.title}>
             <img className={style.icono} src={icono} alt="icono" />
-            <h2 className={style.title_text}>{product ? "Editar Producto" : "Crear Producto"}</h2>
+            <h2 className={style.title_text}>
+              {product ? "Editar Producto" : "Crear Producto"}
+            </h2>
           </div>
 
           <p className={style.p}>Agrega un producto nuevo para tu tienda</p>
@@ -127,12 +161,24 @@ function CreatProducts({ product }: Props) {
             />
 
             <label className={style.label}>Categoría</label>
-            <input
+
+            <select
               className={style.input}
-              type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
+              value={category_id}
+              onChange={(e) =>
+                setCategory_id(
+                  e.target.value === "" ? "" : Number(e.target.value),
+                )
+              }
+            >
+              <option value="">Selecciona una categoría</option>
+
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
 
             <label className={style.label}>Precio</label>
             <input
@@ -140,9 +186,9 @@ function CreatProducts({ product }: Props) {
               type="number"
               min={0}
               step={0.01}
-              value={precio}
+              value={price}
               onChange={(e) =>
-                setPrecio(
+                setPrice(
                   e.target.value === "" ? "" : parseFloat(e.target.value),
                 )
               }

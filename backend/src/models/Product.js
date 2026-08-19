@@ -42,7 +42,39 @@ const creatProduct = async (product) => {
   }
 }
 
+const updateProduct = async (id, product) => {
+  try {
+    const sql = `
+      UPDATE products
+      SET 
+      name = ?,
+      price = ?,
+      stock = ?,
+      description = ?,
+      image = ?,
+      category_id = ?
+      WHERE id = ?
+    `;
+
+    const [result] = await db.query(sql, [
+      product.name,
+      product.price,
+      product.stock,
+      product.description,
+      product.image,
+      product.category_id,
+      product.id
+    ]);
+
+    return result;
+  } catch (error) {
+    console.log("Error al actualizar producto:", error)
+    throw error; 
+  }
+};
+
 module.exports = {
   getAll,
   creatProduct,
+  updateProduct,
 };

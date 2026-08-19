@@ -5,6 +5,7 @@ const upload = require("../config/multer");
 const {
   getProducts,
   creatProduct,
+  updateProduct,
 } = require("../controllers/product.controller");
 
 router.get("/", getProducts);
@@ -13,5 +14,6 @@ router.post(
   upload.single("image"),
   creatProduct
 );
+router.put("/updateproduct/:id", upload.single("image"), updateProduct)
 
 module.exports = router;

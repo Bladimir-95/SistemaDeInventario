@@ -43,6 +43,39 @@ const creatProduct = async (req, res) => {
 
     res.status(500).json({
       message: "Error al crear el producto"
+    });
+  }
+};
+
+const updateProduct = async (req, res) => {
+  try {
+    console.log('BODY:', req.body);
+    console.log('FILE:', req.file);
+
+    const { name, price, description, stock, category_id } = req.body;
+    const id = req.params.id;
+    const image = req.file ? req.file.filename : null;
+
+    const product = {
+      id,
+      name,
+      price,
+      stock,
+      description,
+      image,
+      category_id,
+    }
+
+    const result = await Product.updateProduct(id, product)
+
+    res.status(201).json({
+      message: "Producto actualizado exitosamente"
+    });
+  } catch (error) {
+    console.log("Error:", error)
+
+    res.status(500).json({
+      message: "Error al actualizar el producto"
     })
   }
 }
@@ -50,4 +83,5 @@ const creatProduct = async (req, res) => {
 module.exports = {
   getProducts,
   creatProduct,
+  updateProduct,
 };

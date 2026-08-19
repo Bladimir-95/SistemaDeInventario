@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import style from "./CreateProducts.module.css";
 import icono from "../../../assets/icons/icons8-caja.svg";
 import { useNavigate } from "react-router-dom";
-import GetProducts from '../getProducts/GetProducts';
+
 
 type Product = {
   id: number;
@@ -92,6 +92,12 @@ function CreatProducts({ product }: Props) {
     if (stock === "") return setError("Stock requerido");
     if (!image) return setError("Imagen requerida");
 
+    //solo exigimos una imagen cuando esta creando, de lo 
+    //contrario puede usar la misma
+    if(!isEdit && !image) {
+      return setError("Imagen requerida")
+    }
+
     setError("");
     setSuccess("");
 
@@ -103,28 +109,34 @@ function CreatProducts({ product }: Props) {
       formData.append("price", String(price));
       formData.append("stock", String(stock));
 
+      //Si selecciona una nueva imagen, la enviamos
       if (image) {
         formData.append("image", image);
       }
 
-      const response = await fetch(
-        "http://localhost:3000/api/products/creatproduct",
+      const url = isEdit
+      ? `http://localhost:3000/api/products/updateproduct/${product.id}`
+      : "http://localhost:3000/api/products/creatproduct";
+
+      const response = await fetch(url,
         {
-          method: "POST",
+          method: isEdit ? "PUT" : "POST",
           body: formData,
         },
       );
 
       if(!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || "Error al crear el objeto");
+        throw new Error(data.message || 
+        isEdit ? "Error al actualizar" : "Error al crear el objeto");
       }
 
       const data = await response.json();
 
       console.log(data);
 
-      setSuccess("Producto creado exitosamente")
+      setSuccess(isEdit ? "Producto actualizado exitosamene" : "Producto creado exitosamente");
+
       setTimeout(() => {
         navigate("/getProduct");
       }, 1500);

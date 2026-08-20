@@ -18,7 +18,7 @@ const getProducts = async (req, res) => {
   }
 };
 
-const getProductById = (req, res) => {
+const getProductById = async (req, res) => {
   try {
     const id = req.params.id;
     const product = await Product.getById(id)

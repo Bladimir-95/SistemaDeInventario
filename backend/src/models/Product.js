@@ -83,7 +83,7 @@ const updateProduct = async (id, product) => {
         id,
       ];
     } else {
-      ql = `
+      sql = `
         UPDATE products
         SET 
           name = ?,

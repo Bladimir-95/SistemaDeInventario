@@ -113,9 +113,21 @@ const updateProduct = async (id, product) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    const [result] = await db.query(`DELETE FROM products WHERE id = ?`, [id]);
+
+    return result;
+  } catch (error) {
+    console.log("Error al actualizar producto:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   getAll,
   getById,
   creatProduct,
   updateProduct,
+  deleteProduct,
 };

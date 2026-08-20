@@ -101,6 +101,26 @@ const updateProduct = async (req, res) => {
       message: "Error al actualizar el producto"
     })
   }
+};
+
+//ELIMINAR PRODUCTO
+const deleteProduct = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await Product.deleteProduct(id);
+
+    res.status(201).json({
+      message: "Producto eliminado correctamente"
+    });
+
+  } catch (error) {
+    console.log("Error", error);
+
+    res.status(500).json({
+      message: "Error al eliminar producto"
+    });
+  }
 }
 
 module.exports = {
@@ -108,4 +128,5 @@ module.exports = {
   getProductById,
   creatProduct,
   updateProduct,
+  deleteProduct,
 };

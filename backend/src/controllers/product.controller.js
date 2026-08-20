@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 
+//OBTENER PRODUCTOS
 const getProducts = async (req, res) => {
   try {
     console.log("controlador iniciado")
@@ -17,6 +18,27 @@ const getProducts = async (req, res) => {
   }
 };
 
+const getProductById = (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.getById(id)
+
+    if(!product){
+      return res.status(404).json({
+        message: "Producto no encontrado"
+      });
+    } ;
+
+    res.status(200).json(product)
+  } catch (error) {
+    console.log("Error al encontrar producto", error);
+    res.json({
+      message: "Error al encontrar producto"
+    });
+  }
+}
+
+//CREAR UN PRODUCTO
 const creatProduct = async (req, res) => {
   try {
     console.log("BODY:", req.body);
@@ -47,6 +69,7 @@ const creatProduct = async (req, res) => {
   }
 };
 
+//ACTUALIZACION DE PRODUCTOS
 const updateProduct = async (req, res) => {
   try {
     console.log('BODY:', req.body);
@@ -54,7 +77,7 @@ const updateProduct = async (req, res) => {
 
     const { name, price, description, stock, category_id } = req.body;
     const id = req.params.id;
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.filename : undefined;
 
     const product = {
       id,
@@ -82,6 +105,7 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
   getProducts,
+  getProductById,
   creatProduct,
   updateProduct,
 };

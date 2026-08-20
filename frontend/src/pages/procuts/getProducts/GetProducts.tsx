@@ -13,21 +13,25 @@ type Product = {
   status: number;
   created_at: string;
   updated_at: string;
-}
+};
+
+type Props = {
+  product?: Product;
+};
 
 function GetProducts() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/products");
         const data: Product[] = await response.json();
-        console.log(data)
+        console.log(data);
 
         setProducts(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     };
 
@@ -35,11 +39,36 @@ function GetProducts() {
   }, []);
 
   const handleDelete = (id: number) => {
-    const confirmDelete = confirm("¿Seguro que quieres eliminar este producto?");
+    const confirmDelete = confirm(
+      "¿Seguro que quieres eliminar este producto?",
+    );
     if (!confirmDelete) return;
 
-    const updatedProducts = products.filter(p => p.id !== id);
-    setProducts(updatedProducts);
+    const deleteProduct = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/products/deleteproduct/${id}`,
+          {
+            method: "DELETE",
+          },
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Error al eliminar producto");
+        }
+
+        console.log(data.message);
+
+        setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
+      } catch (error) {
+        console.error("Error al eliminar producto:", error);
+        alert("No se pudo eliminar el producto");
+      }
+    };
+
+    deleteProduct();
   };
 
   return (
@@ -70,7 +99,10 @@ function GetProducts() {
                 <h3 className={style.productName}>{product.name}</h3>
 
                 <div className={style.actions}>
-                  <Link to={`/editProduct/${product.id}`} className={style.editIcon}>
+                  <Link
+                    to={`/editProduct/${product.id}`}
+                    className={style.editIcon}
+                  >
                     ✏️
                   </Link>
 

@@ -90,7 +90,7 @@ function CreatProducts({ product }: Props) {
     if (category_id == "") return setError("Categoría requerida");
     if (price === "") return setError("Precio requerido");
     if (stock === "") return setError("Stock requerido");
-    if (!image) return setError("Imagen requerida");
+
 
     //solo exigimos una imagen cuando esta creando, de lo 
     //contrario puede usar la misma

@@ -19,6 +19,9 @@ function Navbar() {
         <li>
           <Link to="#">Contact</Link>
         </li>
+        <li>
+          <Link to="/getCategories">Categorias</Link>
+        </li>
       </ul>
 
       <p className={style.login}><Link to="/login">Login</Link></p>

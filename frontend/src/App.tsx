@@ -6,6 +6,7 @@ import Login from "./pages/auth/Login";
 import CreatProducts from "./pages/procuts/createProducts/CreatProducts";
 import GetProducts from "./pages/procuts/getProducts/GetProducts";
 import EditProduct from "./pages/procuts/editProduct/EditProduct";
+import GetCategories from "./pages/procuts/category/GetCategories";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/creatProduct" element={<CreatProducts />} />
             <Route path="/getProduct" element={<GetProducts />} />
             <Route path="/editProduct/:id" element={<EditProduct />}/>
+            <Route path="/getCategories" element={<GetCategories/>} />
           </Route >
         </Routes>
       </Router>

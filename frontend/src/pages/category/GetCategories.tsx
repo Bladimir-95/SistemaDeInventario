@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import style from "./GetCategories.module.css";
 
 type Category = {
@@ -41,13 +42,13 @@ function GetCategories() {
 
         <div className={style.categoriesGrid}>
           {categories.map((c) => (
-            <div className={style.card} key={c.id}>
+            <Link to={`categories/${c.id}`} className={style.card} key={c.id}>
               <div className={style.cardContent}>
                 <h3 className={style.categoryName}>{c.name}</h3>
 
                 <p className={style.description}>{c.description}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

@@ -1,12 +1,31 @@
+import { useState, useEffect } from "react";
 import style from "./GetCategories.module.css";
 
 type Category = {
   id: number;
   name: string;
-  description?: string;
+  description: string;
 };
 
 function GetCategories() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/categories");
+        const data: Category[] = await response.json();
+        console.log(data);
+
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getCategories();
+  }, []);
+
   return (
     <div className={style.container}>
       <section className={style.hero}>
@@ -21,54 +40,15 @@ function GetCategories() {
         <h2 className={style.categoriesTitle}>Categorías disponibles</h2>
 
         <div className={style.categoriesGrid}>
-          {/* Ejemplo visual */}
-          <div className={style.card}>
-            <div className={style.cardIcon}>📦</div>
+          {categories.map((c) => (
+            <div className={style.card} key={c.id}>
+              <div className={style.cardContent}>
+                <h3 className={style.categoryName}>{c.name}</h3>
 
-            <div className={style.cardContent}>
-              <h3 className={style.categoryName}>Electrónica</h3>
-
-              <p className={style.description}>
-                Productos y dispositivos electrónicos.
-              </p>
+                <p className={style.description}>{c.description}</p>
+              </div>
             </div>
-          </div>
-
-          <div className={style.card}>
-            <div className={style.cardIcon}>👕</div>
-
-            <div className={style.cardContent}>
-              <h3 className={style.categoryName}>Ropa</h3>
-
-              <p className={style.description}>
-                Prendas de vestir y accesorios.
-              </p>
-            </div>
-          </div>
-
-          <div className={style.card}>
-            <div className={style.cardIcon}>🏠</div>
-
-            <div className={style.cardContent}>
-              <h3 className={style.categoryName}>Hogar</h3>
-
-              <p className={style.description}>
-                Productos para el hogar y decoración.
-              </p>
-            </div>
-          </div>
-
-          <div className={style.card}>
-            <div className={style.cardIcon}>⚽</div>
-
-            <div className={style.cardContent}>
-              <h3 className={style.categoryName}>Deportes</h3>
-
-              <p className={style.description}>
-                Artículos y accesorios deportivos.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>
@@ -76,4 +56,3 @@ function GetCategories() {
 }
 
 export default GetCategories;
-

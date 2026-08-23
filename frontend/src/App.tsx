@@ -6,7 +6,7 @@ import Login from "./pages/auth/Login";
 import CreatProducts from "./pages/procuts/createProducts/CreatProducts";
 import GetProducts from "./pages/procuts/getProducts/GetProducts";
 import EditProduct from "./pages/procuts/editProduct/EditProduct";
-import GetCategories from "./pages/procuts/category/GetCategories";
+import GetCategories from "./pages/category/GetCategories";
 
 function App() {
   return (

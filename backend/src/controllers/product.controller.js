@@ -123,10 +123,26 @@ const deleteProduct = async (req, res) => {
   }
 }
 
+const getProductsByCategory = async (req, res) => {
+  try {
+    const {categoryId} = req.params;
+
+    const products = await Product.getProductsByCategory(categoryId);
+
+    return res.status(200).json(products);
+  } catch (error) {
+    res.status(500).jso({
+      message: "Error al encontrar productos de la categoria selecionada",
+      error: error.message,
+    })
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
   creatProduct,
   updateProduct,
   deleteProduct,
+  getProductsByCategory,
 };

@@ -124,10 +124,26 @@ const deleteProduct = async (id) => {
   }
 }
 
+const getProductsByCategory = async (categoryId) => {
+  try {
+    const sql = `SELECT * FROM products 
+    WHERE category_id = ?
+    `;
+
+    const [result] = await db.query(sql, [categoryId]);
+
+    return result;
+  } catch (error) {
+    console.log("Error al conseguir productos por categoria:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   getAll,
   getById,
   creatProduct,
   updateProduct,
   deleteProduct,
+  getProductsByCategory,
 };

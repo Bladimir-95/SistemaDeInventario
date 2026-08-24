@@ -16,7 +16,6 @@ function GetCategories() {
       try {
         const response = await fetch("http://localhost:3000/api/categories");
         const data: Category[] = await response.json();
-        console.log(data);
 
         setCategories(data);
       } catch (error) {
@@ -42,7 +41,7 @@ function GetCategories() {
 
         <div className={style.categoriesGrid}>
           {categories.map((c) => (
-            <Link to={`categories/${c.id}`} className={style.card} key={c.id}>
+            <Link to={`/category/${c.id}`} className={style.card} key={c.id}>
               <div className={style.cardContent}>
                 <h3 className={style.categoryName}>{c.name}</h3>
 

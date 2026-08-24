@@ -1,5 +1,5 @@
 import style from "./GetProducts.module.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 type Product = {
@@ -15,17 +15,18 @@ type Product = {
   updated_at: string;
 };
 
-type Props = {
-  product?: Product;
-};
-
 function GetProducts() {
   const [products, setProducts] = useState<Product[]>([]);
+  const { categoryId } = useParams();
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/products");
+        const url = categoryId
+          ? `http://localhost:3000/api/products/category/${categoryId}`
+          : "http://localhost:3000/api/products";
+
+        const response = await fetch(url);
         const data: Product[] = await response.json();
         console.log(data);
 
@@ -84,42 +85,45 @@ function GetProducts() {
       {/* PRODUCTOS */}
       <section className={style.productsSection}>
         <h2 className={style.productsTitle}>Productos</h2>
+        {products.length === 0 ? (
+          <p>No hay productos de esta categoria</p>
+        ) : (
+          <div className={style.productsGrid}>
+            {products.map((product) => (
+              <div key={product.id} className={style.card}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className={style.image}
+                />
 
-        <div className={style.productsGrid}>
-          {products.map((product) => (
-            <div key={product.id} className={style.card}>
-              <img
-                src={product.image}
-                alt={product.name}
-                className={style.image}
-              />
+                {/* HEADER CON BOTONES */}
+                <div className={style.cardHeader}>
+                  <h3 className={style.productName}>{product.name}</h3>
 
-              {/* HEADER CON BOTONES */}
-              <div className={style.cardHeader}>
-                <h3 className={style.productName}>{product.name}</h3>
+                  <div className={style.actions}>
+                    <Link
+                      to={`/editProduct/${product.id}`}
+                      className={style.editIcon}
+                    >
+                      ✏️
+                    </Link>
 
-                <div className={style.actions}>
-                  <Link
-                    to={`/editProduct/${product.id}`}
-                    className={style.editIcon}
-                  >
-                    ✏️
-                  </Link>
-
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    className={style.deleteIcon}
-                  >
-                    🗑️
-                  </button>
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className={style.deleteIcon}
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <p className={style.price}>${product.price}</p>
-              <p className={style.stock}>Stock: {product.stock}</p>
-            </div>
-          ))}
-        </div>
+                <p className={style.price}>${product.price}</p>
+                <p className={style.stock}>Stock: {product.stock}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

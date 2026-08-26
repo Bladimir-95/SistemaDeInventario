@@ -18,6 +18,24 @@ const register = async (user) => {
   }
 };
 
+const login = async (email) => {
+  try {
+    const sql = `
+    SELECT id, username, password FROM users 
+    WHERE email = ?
+    `;
+
+    const [result] = await db.query(sql, [email])
+
+    return result[0];
+  } catch (error) {
+    console.log(error);
+
+    throw error;
+  }
+}
+
 module.exports = {
   register,
+  login,
 }

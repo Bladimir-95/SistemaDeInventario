@@ -1,6 +1,6 @@
-const User = require('../models/Register');
+const Register = require('../services/auth.service');
 
-const addUser = async (req, res) => {
+const register = async (req, res) => {
     try {
         const user = {
            username: req.body.username,
@@ -8,7 +8,7 @@ const addUser = async (req, res) => {
            password: req.body.password
         }
 
-        const result = await User.addUser(user);
+        const result = await Register.registerUser(user);
 
        res.status(201).json({
             message: "Usuario creado exitosamente"
@@ -23,5 +23,5 @@ const addUser = async (req, res) => {
 }
 
 module.exports = {
-    addUser,
+    register,
 }

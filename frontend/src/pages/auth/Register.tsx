@@ -2,12 +2,6 @@ import style from "./auth.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-type User = {
-  username: string;
-  email: string;
-  password: string;
-};
-
 function Register() {
   const navigate = useNavigate();
 
@@ -141,5 +135,3 @@ function Register() {
 }
 
 export default Register;
-
-//AGREGAR MENSAJE DE USUARIO CREADO CON EXITO!!!!!

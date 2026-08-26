@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-const addUser = async (user) => {
+const register = async (user) => {
   try {
     const sql = `
         INSERT INTO users (username, email, password)
@@ -19,5 +19,5 @@ const addUser = async (user) => {
 };
 
 module.exports = {
-  addUser,
+  register,
 }

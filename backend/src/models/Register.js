@@ -1,0 +1,23 @@
+const db = require("../config/db");
+
+const addUser = async (user) => {
+  try {
+    const sql = `
+        INSERT INTO users (username, email, password)
+        VALUES (?,?,?)
+        `;
+
+    const value = [user.username, user.email, user.password];
+
+    const [result] = await db.query(sql, value);
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+module.exports = {
+  addUser,
+}

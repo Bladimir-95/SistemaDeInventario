@@ -1,16 +1,29 @@
 import style from "./auth.module.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+type User = {
+  username: string;
+  email: string;
+  password: string;
+};
 
 function Register() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [succes, setSucces] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const message = succes ? (<p style={{color: "green"}}>{succes}</p>) : (<p style={{color: "red"}}>{error}</p>)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSucces("");
 
     if (!name.trim() || !email.trim() || !password || !confirmPassword) {
       setError("Todos los campos son obligatorios");
@@ -32,8 +45,37 @@ function Register() {
       return;
     }
 
-    setError("");
-    console.log({ name, email, password, confirmPassword });
+    try {
+      const response = await fetch("http://localhost:3000/api/users/adduser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: name,
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Error al registrar usuario");
+        return;
+      }
+
+      console.log("Usuario registrado:", data);
+
+      setSucces("Usuario creado con exito");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 5000);
+    } catch (error) {
+      console.error(error);
+      setError("Error de conexion con el servidor");
+    }
   };
 
   return (
@@ -42,7 +84,7 @@ function Register() {
         <div className={style.card}>
           <h2 className={style.title}>Resgistrate</h2>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {message}
 
           <form className={style.form} onSubmit={handleSubmit}>
             <label className={style.text}>Nombre de Usuario</label>
@@ -99,3 +141,5 @@ function Register() {
 }
 
 export default Register;
+
+//AGREGAR MENSAJE DE USUARIO CREADO CON EXITO!!!!!

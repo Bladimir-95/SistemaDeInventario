@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const Product = require("../models/Product");
 
 //OBTENER PRODUCTOS
@@ -108,7 +110,26 @@ const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
 
+    const product = await Product.getById(id);
+
+    if(!product) {
+      return res.status(404).json({
+        message: "Producto no encontrado"
+      })
+    }
+
     const result = await Product.deleteProduct(id);
+
+    if(product.image) {
+      const imagePath = path.join(__dirname, "../uploads", product.image);
+
+      if(fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.log("Producto eliminado", imagePath);
+      } else {
+        console.log("La imagen no existe")
+      }
+    }
 
     res.status(201).json({
       message: "Producto eliminado correctamente"

@@ -1,15 +1,18 @@
 import style from "./auth.module.css";
 import { useState } from "react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
     if (!email || !password) {
       setError("Todos los campos son obligatorios");
@@ -26,8 +29,33 @@ function Login() {
       return;
     }
 
-    setError("");
     console.log({ email, password });
+
+    try {
+      const response = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        })
+      })
+
+      const data = await response.json();
+
+      if(!response.ok) {
+        setError(data.message || "Error al logearse");
+        return;
+      }
+
+     
+      navigate("/getProduct")
+    } catch (error) {
+      console.error(error);
+      setError("No se pudo conectar con el servidor")
+    }
   };
 
   return (

@@ -11,7 +11,12 @@ const getProducts = async (req, res) => {
 
     console.log("Productos recibidos:", products)
 
-    res.status(200).json(products);
+    const productsWithUrl = products.map((product) => ({ 
+      ...product, 
+      image: `http://localhost:3000/images/${product.image}`,
+    }))
+
+    res.status(200).json(productsWithUrl);
   } catch (error) {
     res.status(500).json({
       message: "Error al obtener productos",
@@ -121,7 +126,7 @@ const deleteProduct = async (req, res) => {
     const result = await Product.deleteProduct(id);
 
     if(product.image) {
-      const imagePath = path.join(__dirname, "../uploads", product.image);
+      const imagePath = path.join(__dirname, "../../uploads", product.image);
 
       if(fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
